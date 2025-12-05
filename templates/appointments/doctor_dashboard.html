@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Dashboard - HMS{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Add Availability</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        {{ form.date }}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label class="form-label">Start Time</label>
+                            {{ form.start_time }}
+                        </div>
+                        <div class="col">
+                            <label class="form-label">End Time</label>
+                            {{ form.end_time }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Slot Duration</label>
+                        {{ form.duration }}
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Generate Slots</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Your Availability Slots</h4>
+            </div>
+            <div class="card-body">
+                {% if availabilities %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Time Range</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for slot in availabilities %}
+                            <tr>
+                                <td>{{ slot.date }}</td>
+                                <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+                                <td>
+                                    {% if slot.is_booked %}
+                                    <span class="badge bg-danger">Booked</span>
+                                    {% else %}
+                                    <span class="badge bg-success">Available</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No slots added yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">Upcoming Appointments</h4>
+            </div>
+            <div class="card-body">
+                {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appt in appointments %}
+                            <tr>
+                                <td>{{ appt.patient.username }}</td>
+                                <td>{{ appt.availability.date }}</td>
+                                <td>{{ appt.availability.start_time }} - {{ appt.availability.end_time }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No upcoming appointments.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

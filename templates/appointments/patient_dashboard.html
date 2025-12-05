@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Patient Dashboard - HMS{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Available Appointments</h4>
+            </div>
+            <div class="card-body">
+                {% if available_slots %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for slot in available_slots %}
+                            <tr>
+                                <td><strong>{{ slot.doctor.doctor_profile }}</strong><br><small class="text-muted">{{
+                                        slot.doctor.doctor_profile.specialization }}</small></td>
+                                <td>{{ slot.date }}</td>
+                                <td>{{ slot.start_time }} - {{ slot.end_time }}</td>
+                                <td>
+                                    <a href="{% url 'book_appointment' slot.id %}" class="btn btn-primary btn-sm">Book
+                                        Now</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No available appointments found.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">My Appointments</h4>
+            </div>
+            <div class="card-body">
+                {% if my_appointments %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Booked On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appt in my_appointments %}
+                            <tr>
+                                <td>{{ appt.availability.doctor.doctor_profile }}</td>
+                                <td>{{ appt.availability.date }}</td>
+                                <td>{{ appt.availability.start_time }} - {{ appt.availability.end_time }}</td>
+                                <td>{{ appt.created_at|date:"Y-m-d H:i" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">You haven't booked any appointments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

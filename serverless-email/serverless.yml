@@ -1,0 +1,27 @@
+service: banao-email-service
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  environment:
+    EMAIL_USER: ${env:EMAIL_USER}
+    EMAIL_PASS: ${env:EMAIL_PASS}
+
+functions:
+  sendEmail:
+    handler: handler.send_email
+    events:
+      - http:
+          path: send-email
+          method: post
+          cors: true
+
+plugins:
+  - serverless-offline
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
