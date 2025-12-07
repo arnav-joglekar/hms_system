@@ -3,7 +3,6 @@ import json
 import threading
 from django.conf import settings
 
-# Configuration - In a real app, these should be in settings.py
 EMAIL_SERVICE_URL = getattr(settings, 'EMAIL_SERVICE_URL', 'http://localhost:3000/dev/send-email')
 
 class EmailService:

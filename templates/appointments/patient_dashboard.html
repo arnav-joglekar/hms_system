@@ -4,6 +4,17 @@
 
 {% block content %}
 <div class="row mt-4">
+    <div class="col-12 mb-3 text-end">
+        {% if is_google_calendar_connected %}
+        <button class="btn btn-outline-success" disabled>
+            <i class="bi bi-calendar-check"></i> Google Calendar Connected
+        </button>
+        {% else %}
+        <a href="{% url 'google_calendar_init' %}" class="btn btn-outline-primary">
+            <i class="bi bi-google"></i> Connect Google Calendar
+        </a>
+        {% endif %}
+    </div>
     <div class="col-md-12">
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-success text-white">

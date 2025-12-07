@@ -26,3 +26,15 @@ class PatientProfile(models.Model):
     
     def __str__(self):
         return f"Patient {self.user.username}"
+
+class GoogleCalendarCredentials(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='google_calendar_credentials')
+    token = models.TextField()
+    refresh_token = models.TextField(null=True, blank=True)
+    token_uri = models.URLField()
+    client_id = models.CharField(max_length=255)
+    client_secret = models.CharField(max_length=255)
+    scopes = models.TextField()
+
+    def __str__(self):
+        return f"Google Calendar Credentials for {self.user.username}"
